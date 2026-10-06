@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XO Fan Merch - The Weeknd Unofficial Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        xo: {
+                            red: '#e50914',
+                            gold: '#d4af37',
+                            dark: '#0a0a0a',
+                            card: '#141414',
+                            border: '#262626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #f3f4f6;
+        }
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.7), 0 0 20px rgba(229, 9, 20, 0.4);
+        }
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+        }
+        .box-glow {
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.25);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #e50914;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar bg-black text-gray-100">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-xo-dark/90 backdrop-blur-md border-b border-xo-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-full bg-xo-red flex items-center justify-center font-black text-xl text-black shadow-lg shadow-xo-red/50">
+                        XO
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-widest text-white block leading-none">THE WEEKND</span>
+                        <span class="text-[10px] font-bold tracking-wider text-xo-red uppercase">Unofficial Fan Merch</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Tabs -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-xo-red bg-xo-red/10 border border-xo-red/30">
+                        <i class="fa-solid fa-house mr-2"></i>Home
+                    </button>
+                    <button onclick="switchTab('catalog')" id="nav-catalog" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-xo-card">
+                        <i class="fa-solid fa-shirt mr-2"></i>Katalog
+                    </button>
+                    <button onclick="switchTab('pending')" id="nav-pending" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-xo-card relative">
+                        <i class="fa-solid fa-clock mr-2"></i>Belum Bayar
+                        <span id="pending-badge" class="hidden absolute -top-1 -right-1 bg-xo-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button onclick="switchTab('confirmed')" id="nav-confirmed" class="nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-xo-card relative">
+                        <i class="fa-solid fa-circle-check mr-2"></i>Konfirmasi Order
+                        <span id="confirmed-badge" class="hidden absolute -top-1 -right-1 bg-green-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                </nav>
+
+                <!-- Cart Action -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openCartModal()" class="relative p-2.5 bg-xo-card hover:bg-xo-border rounded-xl border border-xo-border transition-all duration-200 text-white">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-xo-red text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold border-2 border-black">0</span>
+                    </button>
+                    
+                    <!-- Mobile Hamburger Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 bg-xo-card rounded-xl text-gray-300">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-xo-border bg-xo-card px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('home')" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-xo-border">
+                <i class="fa-solid fa-house w-6"></i>Home
+            </button>
+            <button onclick="switchTab('catalog')" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-xo-border">
+                <i class="fa-solid fa-shirt w-6"></i>Katalog Produk
+            </button>
+            <button onclick="switchTab('pending')" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-xo-border flex justify-between items-center">
+                <span><i class="fa-solid fa-clock w-6"></i>Belum Bayar</span>
+                <span id="mobile-pending-badge" class="bg-xo-red text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+            </button>
+            <button onclick="switchTab('confirmed')" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium text-white hover:bg-xo-border flex justify-between items-center">
+                <span><i class="fa-solid fa-circle-check w-6"></i>Konfirmasi Order</span>
+                <span id="mobile-confirmed-badge" class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: HOME PAGE -->
+        <section id="tab-home" class="tab-content space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden border border-xo-border bg-gradient-to-r from-xo-card via-black to-xo-card p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8 box-glow">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(229,9,20,0.15),transparent_50%)]"></div>
+                <div class="relative z-10 max-w-xl space-y-5 text-center md:text-left">
+                    <span class="inline-block px-3 py-1 bg-xo-red/20 text-xo-red border border-xo-red/40 rounded-full text-xs font-extrabold tracking-wider uppercase">
+                        Exclusive XO Collector Merch
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-none">
+                        AFTER HOURS <span class="text-xo-red neon-glow">TILL DAWN</span>
+                    </h1>
+                    <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                        Koleksi eksklusif merchandise fan-made The Weeknd berkualitas premium. Didesain khusus untuk para XO Crew sejati.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-4 justify-center md:justify-start">
+                        <button onclick="switchTab('catalog')" class="px-8 py-4 bg-xo-red hover:bg-red-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-xo-red/30 flex items-center space-x-2">
+                            <span>Jelajahi Katalog</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Highlight Image -->
+                <div class="relative z-10 w-full max-w-xs sm:max-w-sm group cursor-pointer" onclick="openProductModal()">
+                    <div class="relative rounded-2xl overflow-hidden border-2 border-xo-red/50 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                        <img src="https://img.sanishtech.com/u/a64f9f8b3f33434eeec356431a3a7500.jpg" alt="Featured Wristband" class="w-full h-80 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-left">
+                            <span class="text-xs text-xo-gold font-semibold uppercase tracking-widest">Featured Item</span>
+                            <h3 class="text-xl font-bold text-white">The Weeknd Unofficial Wristband</h3>
+                            <p class="text-xo-red font-black text-lg">Rp 30.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-xo-card p-6 rounded-2xl border border-xo-border flex items-start space-x-4">
+                    <div class="p-3 bg-xo-red/10 text-xo-red rounded-xl text-2xl">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-1">Premium Quality</h4>
+                        <p class="text-sm text-gray-400">Bahan silicone & cetakan embossed presisi tinggi dengan durabilitas tinggi.</p>
+                    </div>
+                </div>
+                <div class="bg-xo-card p-6 rounded-2xl border border-xo-border flex items-start space-x-4">
+                    <div class="p-3 bg-xo-red/10 text-xo-red rounded-xl text-2xl">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-1">Pembayaran QRIS Mudah</h4>
+                        <p class="text-sm text-gray-400">Dukung semua e-wallet (Gopay, OVO, Dana) dan Mobile Banking.</p>
+                    </div>
+                </div>
+                <div class="bg-xo-card p-6 rounded-2xl border border-xo-border flex items-start space-x-4">
+                    <div class="p-3 bg-xo-red/10 text-xo-red rounded-xl text-2xl">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-1">Respon CS Cepat</h4>
+                        <p class="text-sm text-gray-400">Konfirmasi cepat & lapor pesanan via WhatsApp terintegrasi langsung.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CATALOG PAGE -->
+        <section id="tab-catalog" class="tab-content hidden space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-xo-border">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight uppercase">Katalog Merchandise</h2>
+                    <p class="text-gray-400 text-sm">Pilih produk fan-made The Weeknd favoritmu</p>
+                </div>
+            </div>
+
+            <!-- Product Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Main Product Card -->
+                <div class="bg-xo-card rounded-2xl border border-xo-border overflow-hidden group hover:border-xo-red/50 transition-all duration-300 flex flex-col justify-between">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openProductModal()">
+                        <img src="https://img.sanishtech.com/u/a64f9f8b3f33434eeec356431a3a7500.jpg" alt="Wristband Front" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-3 right-3 bg-xo-red text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            Best Seller
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-xo-red transition-colors cursor-pointer" onclick="openProductModal()">
+                                The Weeknd Unofficial Wristband
+                            </h3>
+                            <p class="text-xs text-gray-400 mt-1 line-clamp-2">
+                                Gelang eksklusif material silicone elastis dengan grafis khas The Weeknd XO After Hours edition.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-xo-border/60">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Harga Fix</span>
+                                <span class="text-2xl font-black text-white">Rp 30.000</span>
+                            </div>
+                            <button onclick="openProductModal()" class="px-4 py-2.5 bg-xo-red hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all duration-200 flex items-center space-x-2">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>Detail</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: BELUM BAYAR (PENDING ORDERS) -->
+        <section id="tab-pending" class="tab-content hidden space-y-6">
+            <div class="pb-4 border-b border-xo-border flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight uppercase flex items-center gap-3">
+                        <i class="fa-solid fa-clock text-xo-red"></i>
+                        Tempat Belum Bayar
+                    </h2>
+                    <p class="text-gray-400 text-sm">Pesanan aktif yang menunggu pembayaran via QRIS Manual</p>
+                </div>
+            </div>
+
+            <!-- Pending Orders Container -->
+            <div id="pending-orders-list" class="space-y-8">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 4: KONFIRMASI ORDER (CONFIRMED ORDERS & ADMIN VERIFICATION) -->
+        <section id="tab-confirmed" class="tab-content hidden space-y-6">
+            <div class="pb-4 border-b border-xo-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight uppercase flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        Konfirmasi Order
+                    </h2>
+                    <p class="text-gray-400 text-sm">Masukkan kode konfirmasi untuk memverifikasi pembayaran pesanan</p>
+                </div>
+
+                <!-- Admin Code Verification Box -->
+                <div class="w-full md:w-auto bg-xo-card p-4 rounded-2xl border border-xo-border flex flex-col sm:flex-row gap-3 items-center">
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="admin-code-input" placeholder="Masukkan Kode (mis. 111)" class="w-full bg-black border border-xo-border rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-xo-red text-sm uppercase">
+                    </div>
+                    <button onclick="processOrderConfirmation()" class="w-full sm:w-auto px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-sm transition-all duration-200 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-key"></i>
+                        <span>Konfirmasi</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirmed Orders Container -->
+            <div id="confirmed-orders-list" class="space-y-6">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: Detail Produk Slider -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-xo-card rounded-3xl border border-xo-border max-w-3xl w-full p-6 sm:p-8 relative space-y-6 box-glow max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <!-- Close Button -->
+            <button onclick="closeProductModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-2xl w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Image Slider Carousel -->
+                <div class="space-y-3">
+                    <div class="relative rounded-2xl overflow-hidden border border-xo-border bg-black aspect-square">
+                        <img id="carousel-active-img" src="https://img.sanishtech.com/u/a64f9f8b3f33434eeec356431a3a7500.jpg" alt="Wristband Detail" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Thumbnails -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="setCarouselSlide(0)" id="thumb-0" class="rounded-xl overflow-hidden border-2 border-xo-red aspect-video">
+                            <img src="https://img.sanishtech.com/u/a64f9f8b3f33434eeec356431a3a7500.jpg" class="w-full h-full object-cover">
+                        </button>
+                        <button onclick="setCarouselSlide(1)" id="thumb-1" class="rounded-xl overflow-hidden border-2 border-transparent hover:border-xo-border aspect-video">
+                            <img src="https://img.sanishtech.com/u/20e38a48d52895a3e5f0e7b39e9fa057.jpg" class="w-full h-full object-cover">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Info & Add to Cart -->
+                <div class="flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs font-bold text-xo-red uppercase tracking-widest">Official Unofficial XO Merch</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">The Weeknd Unofficial Wristband</h2>
+                        <div class="text-3xl font-black text-xo-red my-3">Rp 30.000</div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Gelang eksklusif edisi spesial fan-made The Weeknd XO. Terbuat dari material silicone sintetis premium berdaya tahan tinggi, nyaman dipakai harian maupun saat konser live After Hours / Till Dawn tour.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-xo-border">
+                        <!-- Quantity Selector -->
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-gray-300">Jumlah:</span>
+                            <div class="flex items-center bg-black border border-xo-border rounded-xl">
+                                <button onclick="updateModalQty(-1)" class="px-3 py-2 text-gray-400 hover:text-white">
+                                    <i class="fa-solid fa-minus text-xs"></i>
+                                </button>
+                                <span id="modal-qty" class="px-4 font-bold text-white text-sm">1</span>
+                                <button onclick="updateModalQty(1)" class="px-3 py-2 text-gray-400 hover:text-white">
+                                    <i class="fa-solid fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button onclick="addCurrentToCart()" class="w-full py-3.5 bg-xo-red hover:bg-red-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-xo-red/30 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Masukkan Ke Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Keranjang Belanja & Checkout -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-xo-card rounded-3xl border border-xo-border max-w-xl w-full p-6 sm:p-8 relative space-y-6 box-glow max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <button onclick="closeCartModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-2xl w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-2xl font-black text-white uppercase flex items-center gap-3">
+                <i class="fa-solid fa-shopping-bag text-xo-red"></i>
+                Keranjang Belanja
+            </h3>
+
+            <!-- Cart Items View -->
+            <div id="cart-content-view" class="space-y-6">
+                <div id="cart-items-container" class="space-y-4">
+                    <!-- Items rendered dynamically -->
+                </div>
+
+                <div id="cart-summary" class="border-t border-xo-border pt-4 space-y-2">
+                    <div class="flex justify-between text-gray-400 text-sm">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-white font-black text-lg pt-2 border-t border-xo-border/40">
+                        <span>Total Pembayaran</span>
+                        <span id="cart-total" class="text-xo-red">Rp 0</span>
+                    </div>
+
+                    <button onclick="showCheckoutForm()" id="btn-proceed-checkout" class="w-full mt-4 py-3.5 bg-xo-red hover:bg-red-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-xo-red/30 flex items-center justify-center space-x-2">
+                        <span>Lanjut Ke Checkout</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Form Data Pembeli (Checkout Form) -->
+            <form id="checkout-form-view" class="hidden space-y-4" onsubmit="handleCheckoutSubmit(event)">
+                <div class="bg-xo-red/10 border border-xo-red/30 rounded-xl p-4 text-xs text-xo-red">
+                    <i class="fa-solid fa-circle-info mr-1"></i> Mohon lengkapi alamat dan data kontak untuk pembuatan tagihan QRIS.
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nama Lengkap *</label>
+                    <input type="text" id="buyer-name" required placeholder="Contoh: Tesar XO" class="w-full bg-black border border-xo-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-xo-red">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nomor WhatsApp *</label>
+                    <input type="tel" id="buyer-phone" required placeholder="Contoh: 081234567890" class="w-full bg-black border border-xo-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-xo-red">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Alamat Lengkap Pengiriman *</label>
+                    <textarea id="buyer-address" required rows="3" placeholder="Jalan, RT/RW, Kec., Kab/Kota, Kode Pos" class="w-full bg-black border border-xo-border rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-xo-red"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="showCartItems()" class="w-1/3 py-3 bg-xo-border hover:bg-gray-700 text-white font-bold rounded-xl text-sm transition-all">
+                        Kembali
+                    </button>
+                    <button type="submit" class="w-2/3 py-3 bg-xo-red hover:bg-red-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg shadow-xo-red/30 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span>Buat Pesanan & Bayar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-xo-card border border-xo-red text-white px-5 py-3 rounded-2xl shadow-2xl hidden flex items-center space-x-3 transition-all">
+        <i class="fa-solid fa-circle-check text-xo-red text-xl"></i>
+        <span id="toast-message" class="text-sm font-semibold">Notifikasi</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-xo-dark border-t border-xo-border py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex justify-center items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-xo-red inline-block"></span>
+                <span class="font-black text-lg text-white">THE WEEKND UNOFFICIAL MERCH</span>
+            </div>
+            <p class="text-xs text-gray-500">
+                Website ini dibuat khusus sebagai karya fan-made (Unofficial Store). Seluruh hak cipta musik & logo XO adalah milik The Weeknd / XO Records.
+            </p>
+            <p class="text-xs text-gray-600">
+                &copy; 2026 XO Crew Indonesia. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Static Product Definition
+        const PRODUCT_DATA = {
+            id: "wristband-01",
+            title: "The Weeknd Unofficial Wristband",
+            price: 30000,
+            slides: [
+                "https://img.sanishtech.com/u/a64f9f8b3f33434eeec356431a3a7500.jpg",
+                "https://img.sanishtech.com/u/20e38a48d52895a3e5f0e7b39e9fa057.jpg"
+            ],
+            qrisImage: "https://img.sanishtech.com/u/924896618f9030ff93dbbd68442db974.jpeg"
+        };
+
+        // Application State
+        let cart = [];
+        let orders = []; // Array of orders
+        let modalQuantity = 1;
+        let activeSlideIndex = 0;
+        let timerIntervals = {};
+
+        // Initialize App on DOM Loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            loadStateFromLocalStorage();
+            updateBadges();
+            renderPendingOrders();
+            renderConfirmedOrders();
+            startAllCountdownTimers();
+        });
+
+        // Navigation Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+            document.getElementById(`tab-${tabId}`).classList.remove("hidden");
+
+            // Nav Button Styling Update
+            document.querySelectorAll(".nav-btn").forEach(btn => {
+                btn.className = "nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-400 hover:text-white hover:bg-xo-card relative";
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.className = "nav-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-xo-red bg-xo-red/10 border border-xo-red/30 relative";
+            }
+
+            // Close mobile menu if open
+            document.getElementById("mobile-menu").classList.add("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("hidden");
+        }
+
+        // LocalStorage State Management
+        function saveStateToLocalStorage() {
+            localStorage.setItem("xo_cart", JSON.stringify(cart));
+            localStorage.setItem("xo_orders", JSON.stringify(orders));
+            updateBadges();
+        }
+
+        function loadStateFromLocalStorage() {
+            const savedCart = localStorage.getItem("xo_cart");
+            const savedOrders = localStorage.getItem("xo_orders");
+
+            if (savedCart) cart = JSON.parse(savedCart);
+            if (savedOrders) orders = JSON.parse(savedOrders);
+        }
+
+        function updateBadges() {
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const pendingCount = orders.filter(o => o.status === 'pending').length;
+            const confirmedCount = orders.filter(o => o.status === 'confirmed').length;
+
+            document.getElementById("cart-badge").innerText = cartCount;
+
+            const pendingBadge = document.getElementById("pending-badge");
+            const mobilePendingBadge = document.getElementById("mobile-pending-badge");
+            pendingBadge.innerText = pendingCount;
+            mobilePendingBadge.innerText = pendingCount;
+            pendingBadge.classList.toggle("hidden", pendingCount === 0);
+
+            const confirmedBadge = document.getElementById("confirmed-badge");
+            const mobileConfirmedBadge = document.getElementById("mobile-confirmed-badge");
+            confirmedBadge.innerText = confirmedCount;
+            mobileConfirmedBadge.innerText = confirmedCount;
+            confirmedBadge.classList.toggle("hidden", confirmedCount === 0);
+        }
+
+        // Product Modal Logic
+        function openProductModal() {
+            modalQuantity = 1;
+            document.getElementById("modal-qty").innerText = modalQuantity;
+            setCarouselSlide(0);
+            document.getElementById("product-modal").classList.remove("hidden");
+        }
+
+        function closeProductModal() {
+            document.getElementById("product-modal").classList.add("hidden");
+        }
+
+        function setCarouselSlide(index) {
+            activeSlideIndex = index;
+            document.getElementById("carousel-active-img").src = PRODUCT_DATA.slides[index];
+
+            // Border styling for thumbnails
+            document.getElementById("thumb-0").className = `rounded-xl overflow-hidden border-2 aspect-video ${index === 0 ? 'border-xo-red' : 'border-transparent'}`;
+            document.getElementById("thumb-1").className = `rounded-xl overflow-hidden border-2 aspect-video ${index === 1 ? 'border-xo-red' : 'border-transparent'}`;
+        }
+
+        function updateModalQty(change) {
+            modalQuantity = Math.max(1, modalQuantity + change);
+            document.getElementById("modal-qty").innerText = modalQuantity;
+        }
+
+        function addCurrentToCart() {
+            const existingIndex = cart.findIndex(item => item.id === PRODUCT_DATA.id);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += modalQuantity;
+            } else {
+                cart.push({
+                    id: PRODUCT_DATA.id,
+                    title: PRODUCT_DATA.title,
+                    price: PRODUCT_DATA.price,
+                    quantity: modalQuantity,
+                    image: PRODUCT_DATA.slides[0]
+                });
+            }
+            saveStateToLocalStorage();
+            closeProductModal();
+            showToast("Produk berhasil ditambahkan ke keranjang!");
+        }
+
+        // Cart & Checkout Modal Logic
+        function openCartModal() {
+            renderCartItems();
+            showCartItems();
+            document.getElementById("cart-modal").classList.remove("hidden");
+        }
+
+        function closeCartModal() {
+            document.getElementById("cart-modal").classList.add("hidden");
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById("cart-items-container");
+            const proceedBtn = document.getElementById("btn-proceed-checkout");
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3 block"></i>
+                        <p class="text-sm">Keranjang belanja Anda masih kosong</p>
+                    </div>
+                `;
+                proceedBtn.disabled = true;
+                proceedBtn.classList.add("opacity-50", "cursor-not-allowed");
+                document.getElementById("cart-subtotal").innerText = "Rp 0";
+                document.getElementById("cart-total").innerText = "Rp 0";
+                return;
+            }
+
+            proceedBtn.disabled = false;
+            proceedBtn.classList.remove("opacity-50", "cursor-not-allowed");
+
+            let subtotal = 0;
+            container.innerHTML = cart.map((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                return `
+                    <div class="flex items-center justify-between bg-black p-3.5 rounded-2xl border border-xo-border">
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.image}" class="w-14 h-14 object-cover rounded-xl border border-xo-border">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">${item.title}</h4>
+                                <span class="text-xo-red font-bold text-xs">Rp ${item.price.toLocaleString("id-ID")}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="flex items-center bg-xo-card border border-xo-border rounded-lg text-xs">
+                                <button onclick="changeCartQty(${index}, -1)" class="px-2 py-1 text-gray-400 hover:text-white">-</button>
+                                <span class="px-2 font-bold text-white">${item.quantity}</span>
+                                <button onclick="changeCartQty(${index}, 1)" class="px-2 py-1 text-gray-400 hover:text-white">+</button>
+                            </div>
+                            <button onclick="removeCartItem(${index})" class="text-gray-500 hover:text-xo-red transition-colors">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById("cart-subtotal").innerText = `Rp ${subtotal.toLocaleString("id-ID")}`;
+            document.getElementById("cart-total").innerText = `Rp ${subtotal.toLocaleString("id-ID")}`;
+        }
+
+        function changeCartQty(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveStateToLocalStorage();
+            renderCartItems();
+        }
+
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            saveStateToLocalStorage();
+            renderCartItems();
+        }
+
+        function showCheckoutForm() {
+            if (cart.length === 0) return;
+            document.getElementById("cart-content-view").classList.add("hidden");
+            document.getElementById("checkout-form-view").classList.remove("hidden");
+        }
+
+        function showCartItems() {
+            document.getElementById("cart-content-view").classList.remove("hidden");
+            document.getElementById("checkout-form-view").classList.add("hidden");
+        }
+
+        function handleCheckoutSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById("buyer-name").value.trim();
+            const phone = document.getElementById("buyer-phone").value.trim();
+            const address = document.getElementById("buyer-address").value.trim();
+
+            if (!name || !phone || !address) {
+                alert("Harap isi semua kolom form data pembeli!");
+                return;
+            }
+
+            const totalAmount = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+            const now = new Date();
+            const expiresAt = new Date(now.getTime() + (24 * 60 * 60 * 1000)).toISOString(); // 24 hours timer
+
+            const newOrder = {
+                id: "XO-" + Math.floor(100000 + Math.random() * 900000),
+                createdAt: now.toISOString(),
+                expiresAt: expiresAt,
+                status: "pending", // 'pending' or 'confirmed'
+                buyer: { name, phone, address },
+                items: [...cart],
+                totalAmount: totalAmount
+            };
+
+            orders.unshift(newOrder); // Add to beginning
+            cart = []; // Empty cart
+            saveStateToLocalStorage();
+
+            // Reset form
+            document.getElementById("checkout-form-view").reset();
+            closeCartModal();
+
+            // Redirect & Notify
+            renderPendingOrders();
+            startAllCountdownTimers();
+            switchTab("pending");
+            showToast("Pesanan berhasil dibuat! Silakan lakukan pembayaran QRIS.");
+        }
+
+        // Render Tab Belum Bayar
+        function renderPendingOrders() {
+            const container = document.getElementById("pending-orders-list");
+            const pendingOrders = orders.filter(o => o.status === "pending");
+
+            if (pendingOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-xo-card border border-xo-border rounded-3xl p-12 text-center text-gray-500 space-y-3">
+                        <i class="fa-solid fa-receipt text-5xl text-xo-border"></i>
+                        <p class="text-base font-semibold">Tidak ada pesanan yang belum dibayar saat ini.</p>
+                        <button onclick="switchTab('catalog')" class="mt-2 px-6 py-2.5 bg-xo-red/10 text-xo-red border border-xo-red/30 hover:bg-xo-red hover:text-white rounded-xl text-sm font-bold transition-all">
+                            Mulai Belanja
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = pendingOrders.map(order => {
+                const totalItemsCount = order.items.reduce((s, i) => s + i.quantity, 0);
+
+                // Prepare CS WhatsApp Template Text
+                const waMessage = `Halo CS XO Merch, saya sudah membayar tetapi belum dikonfirmasi.
+
+📌 *DETAIL PESANAN*
+- ID Pesanan: ${order.id}
+- Nama Lengkap: ${order.buyer.name}
+- No. WhatsApp: ${order.buyer.phone}
+- Alamat Lengkap: ${order.buyer.address}
+- Total Tagihan: Rp ${order.totalAmount.toLocaleString("id-ID")}
+
+Mohon verifikasi pembayaran saya. Terima kasih!`;
+
+                const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(waMessage)}`;
+
+                return `
+                    <div class="bg-xo-card border border-xo-border rounded-3xl p-6 sm:p-8 space-y-6 box-glow">
+                        <!-- Order Header -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-xo-border">
+                            <div>
+                                <span class="text-xs font-bold text-xo-red uppercase tracking-wider">ID Pesanan: #${order.id}</span>
+                                <h3 class="text-lg font-bold text-white">Menunggu Pembayaran QRIS</h3>
+                            </div>
+                            <div class="bg-xo-red/10 border border-xo-red/40 px-4 py-2 rounded-xl flex items-center space-x-2">
+                                <i class="fa-solid fa-hourglass-half text-xo-red text-sm animate-pulse"></i>
+                                <span class="text-xs font-bold text-gray-300">Sisa Waktu:</span>
+                                <span id="timer-${order.id}" class="text-sm font-black text-xo-red font-mono">24:00:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Grid Info & QRIS -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            <!-- Left: Order Summary & Buyer Details -->
+                            <div class="space-y-4">
+                                <div class="bg-black/60 p-4 rounded-2xl border border-xo-border/60 space-y-2 text-xs">
+                                    <div class="text-gray-400 font-bold uppercase mb-1">Data Pemesan:</div>
+                                    <div><span class="text-gray-400">Nama:</span> <span class="text-white font-medium">${order.buyer.name}</span></div>
+                                    <div><span class="text-gray-400">No. HP:</span> <span class="text-white font-medium">${order.buyer.phone}</span></div>
+                                    <div><span class="text-gray-400">Alamat:</span> <span class="text-white font-medium">${order.buyer.address}</span></div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div class="text-xs text-gray-400 font-bold uppercase">Ringkasan Produk (${totalItemsCount} Barang):</div>
+                                    ${order.items.map(item => `
+                                        <div class="flex justify-between items-center bg-black/30 p-2.5 rounded-xl text-xs">
+                                            <span class="text-gray-200 font-semibold">${item.title} (x${item.quantity})</span>
+                                            <span class="text-white font-bold">Rp ${(item.price * item.quantity).toLocaleString("id-ID")}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+
+                                <div class="pt-2 border-t border-xo-border flex justify-between items-center">
+                                    <span class="text-sm text-gray-300 font-bold">Total Tagihan:</span>
+                                    <span class="text-2xl font-black text-xo-red">Rp ${order.totalAmount.toLocaleString("id-ID")}</span>
+                                </div>
+                            </div>
+
+                            <!-- Right: QRIS Display & CS Link -->
+                            <div class="flex flex-col items-center bg-black p-6 rounded-2xl border border-xo-border space-y-4 text-center">
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Scan QRIS Manual Pembayaran</span>
+                                <div class="p-2 bg-white rounded-2xl shadow-xl w-56 h-56 flex items-center justify-center">
+                                    <img src="${PRODUCT_DATA.qrisImage}" alt="QRIS Code" class="w-full h-full object-contain rounded-xl">
+                                </div>
+                                <p class="text-[11px] text-gray-400 max-w-xs">
+                                    Buka aplikasi BCA, GoPay, OVO, Dana, LinkAja atau MBanking lalu scan QRIS di atas.
+                                </p>
+
+                                <!-- CS Contact WhatsApp Button -->
+                                <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center space-x-2 shadow-lg shadow-green-600/20">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Lapor Chat CS / Sudah Bayar</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Timer 24 Jam per Pesanan
+        function startAllCountdownTimers() {
+            // Clear existing intervals
+            Object.values(timerIntervals).forEach(clearInterval);
+            timerIntervals = {};
+
+            orders.filter(o => o.status === 'pending').forEach(order => {
+                const timerEl = document.getElementById(`timer-${order.id}`);
+                
+                function updateTimer() {
+                    const now = new Date().getTime();
+                    const expiry = new Date(order.expiresAt).getTime();
+                    const diff = expiry - now;
+
+                    if (diff <= 0) {
+                        if (timerEl) timerEl.innerText = "EXPIRED";
+                        clearInterval(timerIntervals[order.id]);
+                        return;
+                    }
+
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    const formatted = 
+                        String(hours).padStart(2, '0') + ":" +
+                        String(minutes).padStart(2, '0') + ":" +
+                        String(seconds).padStart(2, '0');
+
+                    const targetEl = document.getElementById(`timer-${order.id}`);
+                    if (targetEl) targetEl.innerText = formatted;
+                }
+
+                updateTimer();
+                timerIntervals[order.id] = setInterval(updateTimer, 1000);
+            });
+        }
+
+        // Processing Order Confirmation with Admin Code "111"
+        function processOrderConfirmation() {
+            const input = document.getElementById("admin-code-input");
+            const code = input.value.trim();
+
+            if (code !== "111") {
+                showToast("Kode konfirmasi salah! Gunakan kode 111");
+                return;
+            }
+
+            const pendingOrders = orders.filter(o => o.status === "pending");
+
+            if (pendingOrders.length === 0) {
+                showToast("Tidak ada pesanan pending yang perlu dikonfirmasi.");
+                input.value = "";
+                return;
+            }
+
+            // Convert all pending orders to confirmed
+            orders.forEach(order => {
+                if (order.status === "pending") {
+                    order.status = "confirmed";
+                    order.confirmedAt = new Date().toISOString();
+                }
+            });
+
+            saveStateToLocalStorage();
+            input.value = "";
+
+            renderPendingOrders();
+            renderConfirmedOrders();
+            showToast("Semua pesanan belum bayar berhasil dikonfirmasi!");
+        }
+
+        // Render Tab Konfirmasi Order
+        function renderConfirmedOrders() {
+            const container = document.getElementById("confirmed-orders-list");
+            const confirmedOrders = orders.filter(o => o.status === "confirmed");
+
+            if (confirmedOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-xo-card border border-xo-border rounded-3xl p-12 text-center text-gray-500 space-y-3">
+                        <i class="fa-solid fa-box-open text-5xl text-xo-border"></i>
+                        <p class="text-base font-semibold">Belum ada order yang dikonfirmasi saat ini.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = confirmedOrders.map(order => `
+                <div class="bg-xo-card border border-green-900/50 rounded-3xl p-6 sm:p-8 space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-4 border-b border-xo-border">
+                        <div>
+                            <span class="text-xs font-bold text-green-500 uppercase tracking-wider">ID Pesanan: #${order.id}</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-circle-check text-green-500"></i>
+                                Pesanan Dikonfirmasi / Telah Dibayar
+                            </h3>
+                        </div>
+                        <span class="px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold rounded-full">
+                            Lunas & Siap Diproses
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-black/40 p-4 rounded-xl border border-xo-border space-y-1">
+                            <span class="text-gray-400 font-bold uppercase block mb-1">Penerima Paket:</span>
+                            <p class="text-white font-semibold">${order.buyer.name} (${order.buyer.phone})</p>
+                            <p class="text-gray-300">${order.buyer.address}</p>
+                        </div>
+
+                        <div class="bg-black/40 p-4 rounded-xl border border-xo-border space-y-1">
+                            <span class="text-gray-400 font-bold uppercase block mb-1">Item Pesanan:</span>
+                            ${order.items.map(i => `<p class="text-white">${i.title} x${i.quantity}</p>`).join('')}
+                            <p class="text-green-400 font-black text-sm pt-2">Total Paid: Rp ${order.totalAmount.toLocaleString("id-ID")}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Notification Helper
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            const messageEl = document.getElementById("toast-message");
+
+            messageEl.innerText = msg;
+            toast.classList.remove("hidden");
+
+            setTimeout(() => {
+                toast.classList.add("hidden");
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
